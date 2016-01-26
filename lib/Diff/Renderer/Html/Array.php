@@ -82,12 +82,12 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 
 						list($start, $end) = $this->getChangeExtent($fromLine, $toLine);
 						if($start != 0 || $end != 0) {
-							$last = $end + strlen($fromLine);
-							$fromLine = substr_replace($fromLine, "\0", $start, 0);
-							$fromLine = substr_replace($fromLine, "\1", $last + 1, 0);
-							$last = $end + strlen($toLine);
-							$toLine = substr_replace($toLine, "\0", $start, 0);
-							$toLine = substr_replace($toLine, "\1", $last + 1, 0);
+							$last = $end + mb_strlen($fromLine);
+							$fromLine = self::mbSubstrReplace($fromLine, "\0", $start, 0);
+							$fromLine = self::mbSubstrReplace($fromLine, "\1", $last + 1, 0);
+							$last = $end + mb_strlen($toLine);
+							$toLine = self::mbSubstrReplace($toLine, "\0", $start, 0);
+							$toLine = self::mbSubstrReplace($toLine, "\1", $last + 1, 0);
 							$a[$i1 + $i] = $fromLine;
 							$b[$j1 + $i] = $toLine;
 						}
@@ -149,13 +149,13 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	private function getChangeExtent($fromLine, $toLine)
 	{
 		$start = 0;
-		$limit = min(strlen($fromLine), strlen($toLine));
-		while($start < $limit && $fromLine{$start} == $toLine{$start}) {
+		$limit = min(mb_strlen($fromLine), mb_strlen($toLine));
+		while($start < $limit && mb_substr($fromLine, $start, 1) == mb_substr($toLine, $start, 1)) {
 			++$start;
 		}
 		$end = -1;
 		$limit = $limit - $start;
-		while(-$end <= $limit && substr($fromLine, $end, 1) == substr($toLine, $end, 1)) {
+		while(-$end <= $limit && mb_substr($fromLine, $end, 1) == mb_substr($toLine, $end, 1)) {
 			--$end;
 		}
 		return array(
@@ -221,5 +221,40 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	private function htmlSafe($string)
 	{
 		return htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8');
+	}
+
+	/**
+	 * mb_Sub_Str_Replace
+	 */
+	private function mbSubstrReplace( $str, $replace, $start, $num=NULL ){
+
+		$strNum = mb_strlen($str);
+		if( $start < 0 ){
+			$start = $strNum + $start;
+			if( $start < 0 ){
+				$start = 0;
+			}
+		}
+		$tempBefore = mb_substr($str, 0, $start);
+
+		if( $start > $strNum ){
+			$num = $strNum;
+		}
+
+		if( !isset($num) ){
+			$num = $strNum;
+		}elseif( $num < 0 ){
+			$num = $strNum + $num;
+			if( $num < 0 ){
+				$num = $start - $strNum;
+			}
+		}else{
+			$num = $start + $num;
+		}
+
+		$tempAfter = mb_substr($str, $num, $strNum);
+
+		return $tempBefore . $replace . $tempAfter;
+
 	}
 }

@@ -73,7 +73,7 @@ class Diff
 	/**
 	 * @var array Array of the options that have been applied for generating the diff.
 	 */
-	private $options = array();
+	public $options = array();
 
 	/**
 	 * The constructor.

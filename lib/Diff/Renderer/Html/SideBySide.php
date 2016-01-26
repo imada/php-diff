@@ -59,11 +59,18 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 			return $html;
 		}
 
-		$html .= '<table class="Differences DifferencesSideBySide">';
+		//custom
+		$oldVersion = (!empty($this->diff->options["old_version_title"]))? $this->diff->options["old_version_title"] : "Old Version";
+		$newVersion = (!empty($this->diff->options["new_version_title"]))? $this->diff->options["new_version_title"] : "New Version";
+
+		$html .= '<table class="show_diff_draft DifferencesSideBySide">';
+//        $html .= '<table class="Differences DifferencesSideBySide">';
 		$html .= '<thead>';
 		$html .= '<tr>';
-		$html .= '<th colspan="2">Old Version</th>';
-		$html .= '<th colspan="2">New Version</th>';
+		$html .= '<th colspan="2">' . $oldVersion .'</th>';
+		$html .= '<th colspan="2">' . $newVersion .'</th>';
+//        $html .= '<th colspan="2">Old Version</th>';
+//        $html .= '<th colspan="2">New Version</th>';
 		$html .= '</tr>';
 		$html .= '</thead>';
 		foreach($changes as $i => $blocks) {
@@ -130,7 +137,11 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 								$changedLine = '<span>'.$change['changed']['lines'][$no].'</span>';
 							}
 							$html .= '<th>'.$toLine.'</th>';
-							$html .= '<td class="Right">'.$changedLine.'</td>';
+							if (is_numeric($toLine)) {
+								$html .= '<td class="Right">'.$changedLine.'</td>';
+							} else {
+								$html .= '<td class="Right blank">'.$changedLine.'</td>';
+							}
 							$html .= '</tr>';
 						}
 					}
@@ -146,7 +157,11 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 							}
 							$html .= '<tr>';
 							$html .= '<th>'.$fromLine.'</th>';
-							$html .= '<td class="Left"><span>'.$line.'</span>&nbsp;</td>';
+							if (is_numeric($fromLine)) {
+								$html .= '<td class="Left"><span>'.$line.'</span>&nbsp;</td>';
+							} else {
+								$html .= '<td class="Left blank"><span>'.$line.'</span>&nbsp;</td>';
+							}
 							$toLine = $change['changed']['offset'] + $no + 1;
 							$html .= '<th>'.$toLine.'</th>';
 							$html .= '<td class="Right">'.$changedLine.'</td>';
