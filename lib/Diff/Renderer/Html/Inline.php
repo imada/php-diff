@@ -64,6 +64,8 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 		//変更がある差分の行番号を表示するか
 		$showChangeLine = (!empty($this->diff->options["show_change_line"]))? $this->diff->options["show_change_line"] : FALSE;
 		$isNew = (!empty($this->diff->options["is_new"]))? $this->diff->options["is_new"] : FALSE;
+		//１行のみの差分表示の有無
+		$singleLine = (!empty($this->diff->options["single_line"]))? $this->diff->options["single_line"] : FALSE;
 
 		$breakFlag = FALSE;
 		$count = 0;
@@ -175,7 +177,9 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 								$html .= '<td class="row_header">'.$fromLine.'</th>';
 								$html .= '<td class="row_header">&nbsp;</th>';
 							}
-							$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+							if (!$singleLine || ($singleLine && str_replace([" ", "　"], "", $line))) {
+								$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+							}
 							$html .= '</tr>';
 						}
 
@@ -193,7 +197,9 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">&nbsp;</th>';
 							$html .= '<td class="row_header">'.$toLine.'</th>';
 						}
-						$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+						if (!$singleLine || ($singleLine && str_replace([" ", "　"], "", $line))) {
+							$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+						}
 						$html .= '</tr>';
 
 						//custom
