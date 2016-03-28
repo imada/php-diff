@@ -177,7 +177,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 								$html .= '<td class="row_header">'.$fromLine.'</th>';
 								$html .= '<td class="row_header">&nbsp;</th>';
 							}
-							if (!$singleLine || ($singleLine && str_replace([" ", "　"], "", $line))) {
+							if (!$singleLine || ($singleLine && str_replace([" ", "　", "<del>", "</del>", "<ins>", "</ins>"], "", $line))) {
 								$html .= '<td class="row_content"><span>'.$line.'</span></td>';
 							}
 							$html .= '</tr>';
@@ -197,7 +197,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">&nbsp;</th>';
 							$html .= '<td class="row_header">'.$toLine.'</th>';
 						}
-						if (!$singleLine || ($singleLine && str_replace([" ", "　"], "", $line))) {
+						if (!$singleLine || ($singleLine && str_replace([" ", "　", "<del>", "</del>", "<ins>", "</ins>"], "", $line))) {
 							$html .= '<td class="row_content"><span>'.$line.'</span></td>';
 						}
 						$html .= '</tr>';
