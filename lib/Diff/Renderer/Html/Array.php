@@ -150,12 +150,20 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
 	{
 		$start = 0;
 		$limit = min(mb_strlen($fromLine), mb_strlen($toLine));
-		while($start < $limit && mb_substr($fromLine, $start, 1) == mb_substr($toLine, $start, 1)) {
+		$fromArray = preg_split('//u', $fromLine, -1, PREG_SPLIT_NO_EMPTY);
+		$toArray = preg_split('//u', $toLine, -1, PREG_SPLIT_NO_EMPTY);
+		while($start < $limit) {
+			if ($fromArray[$start] != $toArray[$start]) {
+				break;
+			}
 			++$start;
 		}
 		$end = -1;
 		$limit = $limit - $start;
-		while(-$end <= $limit && mb_substr($fromLine, $end, 1) == mb_substr($toLine, $end, 1)) {
+		while(-$end <= $limit) {
+			if (array_pop($fromArray) != array_pop($toArray)) {
+				break;
+			}
 			--$end;
 		}
 		return array(
