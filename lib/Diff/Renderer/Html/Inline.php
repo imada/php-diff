@@ -116,6 +116,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">'.$fromLine.'</th>';
 							$html .= '<td class="row_header">'.$toLine.'</th>';
 						}
+						$html .= '<td class="row_diff_marker"> </td>';
 						$html .= '<td class="row_content">'.$line.'</td>';
 						$html .= '</tr>';
 
@@ -136,6 +137,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">&nbsp;</th>';
 							$html .= '<td class="row_header">'.$toLine.'</th>';
 						}
+						$html .= '<td class="row_diff_marker">+</td>';
 						$html .= '<td class="row_content"><ins>'.$line.'</ins>&nbsp;</td>';
 						$html .= '</tr>';
 
@@ -156,6 +158,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">'.$fromLine.'</th>';
 							$html .= '<td class="row_header">&nbsp;</th>';
 						}
+						$html .= '<td class="row_diff_marker">−</td>';
 						$html .= '<td class="row_content"><del>'.$line.'</del>&nbsp;</td>';
 						$html .= '</tr>';
 
@@ -178,7 +181,10 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 								$html .= '<td class="row_header">&nbsp;</th>';
 							}
 							if (!$singleLine || ($singleLine && str_replace([" ", "　", "<del>", "</del>", "<ins>", "</ins>"], "", $line))) {
+								$html .= '<td class="row_diff_marker">−</td>';
 								$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+							} else {
+								$html .= '<td class="row_diff_marker"></td>';
 							}
 							$html .= '</tr>';
 						}
@@ -198,7 +204,10 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 							$html .= '<td class="row_header">'.$toLine.'</th>';
 						}
 						if (!$singleLine || ($singleLine && str_replace([" ", "　", "<del>", "</del>", "<ins>", "</ins>"], "", $line))) {
+							$html .= '<td class="row_diff_marker">+</td>';
 							$html .= '<td class="row_content"><span>'.$line.'</span></td>';
+						} else {
+							$html .= '<td class="row_diff_marker"></td>';
 						}
 						$html .= '</tr>';
 
