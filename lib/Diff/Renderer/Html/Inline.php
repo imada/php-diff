@@ -89,6 +89,7 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 					$html .= '<th>&nbsp;</th>';
 				}
 				$html .= '<td>&hellip;</td>';
+				$html .= '<td></td>';
 				$html .= '</tbody>';
 			}
 
